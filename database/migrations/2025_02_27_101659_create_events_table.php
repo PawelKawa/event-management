@@ -17,10 +17,10 @@ return new class extends Migration
 			$table->foreignIdFor(User::class);
 			$table->string('name');
 			$table->text('description')->nullable();
+			$table->string('location')->nullable();
 			$table->dateTime('start_time');
 			$table->dateTime('end_time');
-			$table->string('location')->nullable();
-            $table->timestamps();
+			$table->timestamps();
         });
     }
 

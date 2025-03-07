@@ -20,8 +20,7 @@ class EventController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-
+	{
 		$event = Event::create([
 			...$request->validate([
 				'name' => 'required|string|max:255',
@@ -46,16 +45,28 @@ class EventController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+	public function update(Request $request, Event $event)
     {
-        //
-    }
+		$event->update(
+			$request->validate([
+				'name' => 'sometimes|string|max:255',
+				'description' => 'nullable|string',
+				'start_time' => 'sometimes|date',
+				'end_time' => 'sometimes|date|after:start_time',
+				'location' => 'sometimes|string|max:255',
+			])
+		);
+		return $event;
+	}
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+	public function destroy(Event $event)
     {
-        //
+		$event->delete();
+		return response()->json([
+			'message' => 'Event deleted successfully',
+		]);
     }
 }
